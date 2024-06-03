@@ -12,7 +12,7 @@ export const setupServer = () => {
   app.use(express.json());
   app.use(cors());
 
-  app.get('/api/contacts', async (req, res) => {
+  app.get('/contacts', async (req, res) => {
     try {
       const contacts = await getContact();
 
@@ -30,10 +30,16 @@ export const setupServer = () => {
     }
   });
 
-  app.get('/api/contacts/:contactId', async (req, res) => {
+  app.get('/contacts/:contactId', async (req, res) => {
     try {
       const { contactId } = req.params;
       const contact = await getContactById(contactId);
+      if (!contact) {
+        return res.status(404).json({
+          status: 'error',
+          message: 'Contact not found',
+        });
+      }
 
       res.status(200).json({
         status: 'success',
