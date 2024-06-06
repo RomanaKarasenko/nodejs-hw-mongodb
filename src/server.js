@@ -3,6 +3,7 @@ import pino from 'pino-http';
 import cors from 'cors';
 import { env } from './utils/env.js';
 import contactsRouter from './routers/contacts.js';
+import createError from 'http-errors';
 
 const PORT = env.PORT || 3000;
 
@@ -16,14 +17,21 @@ export const setupServer = () => {
   // Використання маршрутизації
   app.use('/', contactsRouter);
 
-  app.use((req, res) => {
-    res.status(404).json({ message: 'Not found' });
+  // Middleware для обробки неіснуючих маршрутів
+  app.use((req, res, next) => {
+    if (req.url === '/favicon.ico') {
+      // Ігноруємо запит на favicon.ico
+      return res.status(204).end();
+    }
+    next(createError(404, 'Route not found'));
   });
 
+  // Middleware для обробки помилок
   app.use((err, req, res, next) => {
-    res.status(500).json({
+    res.status(err.status || 500).json({
+      status: 'error',
       message: 'Something went wrong',
-      error: err.message,
+      data: err.message,
     });
   });
 
