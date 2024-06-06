@@ -3,7 +3,10 @@ import pino from 'pino-http';
 import cors from 'cors';
 import { env } from './utils/env.js';
 import contactsRouter from './routers/contacts.js';
-import createError from 'http-errors';
+import {
+  notFoundMiddleware,
+  errorHandlerMiddleware,
+} from './middlewares/index.js';
 
 const PORT = env.PORT || 3000;
 
@@ -14,26 +17,10 @@ export const setupServer = () => {
   app.use(cors());
   app.use(pino({ transport: { target: 'pino-pretty' } }));
 
-  // Використання маршрутизації
+
   app.use('/', contactsRouter);
-
-  // Middleware для обробки неіснуючих маршрутів
-  app.use((req, res, next) => {
-    if (req.url === '/favicon.ico') {
-      // Ігноруємо запит на favicon.ico
-      return res.status(204).end();
-    }
-    next(createError(404, 'Route not found'));
-  });
-
-  // Middleware для обробки помилок
-  app.use((err, req, res, next) => {
-    res.status(err.status || 500).json({
-      status: 'error',
-      message: err.message || 'Something went wrong',
-      data: null,
-    });
-  });
+  app.use(notFoundMiddleware);
+  app.use(errorHandlerMiddleware);
 
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
