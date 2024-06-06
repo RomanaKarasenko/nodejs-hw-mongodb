@@ -11,6 +11,12 @@ export const getContact = async () => {
 };
 
 export const createContact = async (contactData) => {
+  const { name, phoneNumber } = contactData;
+
+  if (!name || !phoneNumber) {
+    throw new Error('Name and phone number are required');
+  }
+
   const newContact = new Contact(contactData);
   await newContact.save();
   return newContact;
@@ -24,6 +30,7 @@ export const updateContact = async (contactId, updateData) => {
   );
   return updatedContact;
 };
+
 export const deleteContact = async (contactId) => {
   const deletedContact = await Contact.findByIdAndDelete(contactId);
   return deletedContact;

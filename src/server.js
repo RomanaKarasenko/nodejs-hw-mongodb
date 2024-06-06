@@ -30,8 +30,8 @@ export const setupServer = () => {
   app.use((err, req, res, next) => {
     res.status(err.status || 500).json({
       status: 'error',
-      message: 'Something went wrong',
-      data: err.message,
+      message: err.message || 'Something went wrong',
+      data: null,
     });
   });
 
