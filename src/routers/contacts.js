@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import express from 'express';
 import {
   getAllContacts,
   getContactByIdController,
@@ -9,17 +8,14 @@ import {
 } from '../controllers/contacts.js';
 
 const router = Router();
-const app = express();
-
-app.use(express.json());
 
 export const ctrlWrapper = (controller) => {
   return async (req, res, next) => {
-      try {
-          await controller(req, res, next);
-      } catch (err) {
-          next(err);
-      }
+    try {
+      await controller(req, res, next);
+    } catch (err) {
+      next(err);
+    }
   };
 };
 

@@ -3,8 +3,8 @@ import pino from 'pino-http';
 import cors from 'cors';
 import { env } from './utils/env.js';
 import contactsRouter from './routers/contacts.js';
-import { notFoundMiddleware } from './middlewares/notFoundMiddleware.js';
 import { errorHandlerMiddleware } from './middlewares/errorHandlerMiddleware.js';
+import { notFoundMiddleware } from './middlewares/notFoundMiddleware.js';
 
 const PORT = env.PORT || 3000;
 
@@ -14,9 +14,12 @@ export const setupServer = () => {
   app.use(express.json());
   app.use(cors());
   app.use(pino({ transport: { target: 'pino-pretty' } }));
-
-
-  app.use('/contacts', contactsRouter);
+  app.get('/', (req, res) => {
+    res.json({
+      message: 'Hello!',
+    });
+  });
+  app.use(contactsRouter);
   app.use(notFoundMiddleware);
   app.use(errorHandlerMiddleware);
 
