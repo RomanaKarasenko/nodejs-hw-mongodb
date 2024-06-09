@@ -10,6 +10,8 @@ import {
 export const getAllContacts = async (req, res) => {
   const contacts = await getContact();
   res.status(200).json({
+    status: 200,
+    message: 'Successfully found contacts!',
     data: contacts,
   });
 };
