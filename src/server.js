@@ -16,7 +16,7 @@ export const setupServer = () => {
   app.use(pino({ transport: { target: 'pino-pretty' } }));
 
 
-  app.use('/', contactsRouter);
+  app.use('/contacts', contactsRouter);
   app.use(notFoundMiddleware);
   app.use(errorHandlerMiddleware);
 

@@ -23,10 +23,10 @@ export const ctrlWrapper = (controller) => {
   };
 };
 
-router.get('/', ctrlWrapper(getAllContacts));
-router.get('/:contactId', ctrlWrapper(getContactByIdController));
-router.post('/', ctrlWrapper(createContactController));
-router.patch('/:contactId', ctrlWrapper(updateContactController));
-router.delete('/:contactId', ctrlWrapper(deleteContactController));
+router.get('/contacts', ctrlWrapper(getAllContacts));
+router.get('/contacts/:contactId', ctrlWrapper(getContactByIdController));
+router.post('/contacts', ctrlWrapper(createContactController));
+router.patch('/contacts/:contactId', ctrlWrapper(updateContactController));
+router.delete('/contacts/:contactId', ctrlWrapper(deleteContactController));
 
 export default router;
