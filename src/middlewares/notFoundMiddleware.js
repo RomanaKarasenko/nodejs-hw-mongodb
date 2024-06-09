@@ -1,3 +1,3 @@
-export const notFoundMiddleware = (req, res, next) => {
+export const notFoundMiddleware = (req, res) => {
   res.status(404).json({ message: 'Route not found' });
 };
