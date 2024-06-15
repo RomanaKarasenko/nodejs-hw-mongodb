@@ -14,11 +14,6 @@ export const setupServer = () => {
   app.use(express.json());
   app.use(cors());
   app.use(pino({ transport: { target: 'pino-pretty' } }));
-  app.get('/', (req, res) => {
-    res.json({
-      message: 'Hello!',
-    });
-  });
   app.use(contactsRouter);
   app.use(notFoundMiddleware);
   app.use(errorHandlerMiddleware);
