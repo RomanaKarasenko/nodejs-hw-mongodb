@@ -11,7 +11,7 @@ const validateMongoId =
   }
 
   if (!isValidObjectId(id)) {
-    return next(createHttpError(400, 'Invalid ID'));
+    return next(createHttpError(400, 'Invalid ID Please specify correct data'));
   }
 
   return next();
