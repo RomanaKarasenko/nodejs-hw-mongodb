@@ -10,6 +10,7 @@ import validateMongoId from '../middlewares/validateMongoId.js';
 import validateBody from '../middlewares/validateBody.js';
 import { createContactsSchema } from '../validation/contactsShema.js';
 import { updateContactsSchema } from '../validation/updateContactsSchema.js';
+
 const router = Router();
 
 export const ctrlWrapper = (controller) => {
@@ -22,19 +23,19 @@ export const ctrlWrapper = (controller) => {
   };
 };
 
-router.use('/contacts/:contactId', validateMongoId('contactId'));
-router.get('/contacts', ctrlWrapper(getAllContacts));
-router.get('/contacts/:contactId', ctrlWrapper(getContactByIdController));
+router.use('/:contactId', validateMongoId('contactId'));
+router.get('/', ctrlWrapper(getAllContacts));
+router.get('/:contactId', ctrlWrapper(getContactByIdController));
 router.post(
-  '/contacts',
+  '/',
   validateBody(createContactsSchema),
   ctrlWrapper(createContactController),
 );
 router.patch(
-  '/contacts/:contactId',
+  '/:contactId',
   validateBody(updateContactsSchema),
   ctrlWrapper(updateContactController),
 );
-router.delete('/contacts/:contactId', ctrlWrapper(deleteContactController));
+router.delete('/:contactId', ctrlWrapper(deleteContactController));
 
 export default router;
