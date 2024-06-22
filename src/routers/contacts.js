@@ -10,8 +10,9 @@ import validateMongoId from '../middlewares/validateMongoId.js';
 import validateBody from '../middlewares/validateBody.js';
 import { createContactsSchema } from '../validation/contactsShema.js';
 import { updateContactsSchema } from '../validation/updateContactsSchema.js';
+import { authenticate } from '../middlewares/authenticate.js';
 
-const router = Router();
+const contactsRouter = Router();
 
 export const ctrlWrapper = (controller) => {
   return async (req, res, next) => {
@@ -22,20 +23,20 @@ export const ctrlWrapper = (controller) => {
     }
   };
 };
-
-router.use('/:contactId', validateMongoId('contactId'));
-router.get('/', ctrlWrapper(getAllContacts));
-router.get('/:contactId', ctrlWrapper(getContactByIdController));
-router.post(
+contactsRouter.use(authenticate);
+contactsRouter.use('/:contactId', validateMongoId('contactId'));
+contactsRouter.get('/', ctrlWrapper(getAllContacts));
+contactsRouter.get('/:contactId', ctrlWrapper(getContactByIdController));
+contactsRouter.post(
   '/',
   validateBody(createContactsSchema),
   ctrlWrapper(createContactController),
 );
-router.patch(
+contactsRouter.patch(
   '/:contactId',
   validateBody(updateContactsSchema),
   ctrlWrapper(updateContactController),
 );
-router.delete('/:contactId', ctrlWrapper(deleteContactController));
+contactsRouter.delete('/:contactId', ctrlWrapper(deleteContactController));
 
-export default router;
+export default contactsRouter;
