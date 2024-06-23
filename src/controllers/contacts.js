@@ -31,9 +31,9 @@ export const getContactByIdController = (req, res, next) => {
   const { contactId } = req.params;
   const { _id: userId } = req.user;
 
-  getContactById(contactId)
+  getContactById(contactId, userId)
     .then((contact) => {
-      if (!contact || contact.userId.toString() !== userId.toString()) {
+      if (!contact) {
         throw createHttpError(404, 'Contact not found');
       }
       res.status(200).json({
@@ -63,12 +63,12 @@ export const updateContactController = (req, res, next) => {
   const { contactId } = req.params;
   const { _id: userId } = req.user;
 
-  getContactById(contactId)
+  getContactById(contactId, userId)
     .then((contact) => {
-      if (!contact || contact.userId.toString() !== userId.toString()) {
+      if (!contact) {
         throw createHttpError(404, 'Contact not found');
       }
-      return updateContact(contactId, req.body, { new: true });
+      return updateContact(contactId, userId, req.body);
     })
     .then((updatedContact) => {
       res.status(200).json({
@@ -84,12 +84,12 @@ export const deleteContactController = (req, res, next) => {
   const { contactId } = req.params;
   const { _id: userId } = req.user;
 
-  getContactById(contactId)
+  getContactById(contactId, userId)
     .then((contact) => {
-      if (!contact || contact.userId.toString() !== userId.toString()) {
+      if (!contact) {
         throw createHttpError(404, 'Contact not found');
       }
-      return deleteContact(contactId);
+      return deleteContact(contactId, userId);
     })
     .then(() => {
       res.status(204).send();
