@@ -16,7 +16,7 @@ export const getAllContacts = (req, res, next) => {
   const { sortBy, sortOrder } = parseSortParams(req.query);
   const filter = { ...parseFilterParams(req.query), userId };
 
-  getContact({ page, perPage, sortBy, sortOrder, filter })
+  getContact({ page, perPage, sortBy, sortOrder, filter, userId })
     .then((contacts) => {
       res.status(200).json({
         status: 200,
