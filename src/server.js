@@ -6,6 +6,7 @@ import router from './routers/index.js';
 import { errorHandlerMiddleware } from './middlewares/errorHandlerMiddleware.js';
 import { notFoundMiddleware } from './middlewares/notFoundMiddleware.js';
 import cookieParser from 'cookie-parser';
+import { UPLOAD_DIR } from './constants/index.js';
 
 
 const PORT = env.PORT || 3000;
@@ -19,6 +20,7 @@ export const setupServer = () => {
   app.use(router);
   app.use(notFoundMiddleware);
   app.use(errorHandlerMiddleware);
+  app.use('/uploads', express.static(UPLOAD_DIR));
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });

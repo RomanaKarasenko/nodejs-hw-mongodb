@@ -9,6 +9,9 @@ import {
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
+import { saveFileToUploadDir } from '../utils/saveFileToUploadDir.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
+import { env } from '../utils/env.js';
 
 export const getAllContacts = (req, res, next) => {
   const { _id: userId } = req.user;
@@ -59,25 +62,39 @@ export const createContactController = (req, res, next) => {
     .catch(next);
 };
 
-export const updateContactController = (req, res, next) => {
+export const updateContactController = async (req, res, next) => {
   const { contactId } = req.params;
   const { _id: userId } = req.user;
+  const photo = req.file;
+  let photoUrl;
 
-  getContactById(contactId, userId)
-    .then((contact) => {
-      if (!contact) {
-        throw createHttpError(404, 'Contact not found');
+  try {
+    if (photo) {
+      if (env('ENABLE_CLOUDINARY') === 'true') {
+        photoUrl = await saveFileToCloudinary(photo);
+      } else {
+        photoUrl = await saveFileToUploadDir(photo);
       }
-      return updateContact(contactId, userId, req.body);
-    })
-    .then((updatedContact) => {
-      res.status(200).json({
-        status: 200,
-        message: 'Successfully updated the contact!',
-        data: updatedContact,
-      });
-    })
-    .catch(next);
+    }
+
+    const contact = await getContactById(contactId, userId);
+    if (!contact) {
+      throw createHttpError(404, 'Contact not found');
+    }
+
+    const updatedContact = await updateContact(contactId, userId, {
+      ...req.body,
+      photo: photoUrl,
+    });
+
+    res.status(200).json({
+      status: 200,
+      message: 'Successfully updated the contact!',
+      data: updatedContact,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const deleteContactController = (req, res, next) => {
