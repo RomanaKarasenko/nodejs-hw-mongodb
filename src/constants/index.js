@@ -13,6 +13,7 @@ export const SMTP = {
   SMTP_PORT: 'SMTP_PORT',
   SMTP_USER: 'SMTP_USER',
   SMTP_PASSWORD: 'SMTP_PASSWORD',
+  SMTP_FROM: 'SMTP_FROM',
 };
 export const TEMPLATES_DIR = path.join(process.cwd(), 'src', 'templates');
 
@@ -24,3 +25,4 @@ export const CLOUDINARY = {
   API_KEY: 'API_KEY',
   API_SECRET: 'API_SECRET',
 };
+export const ENABLE_CLOUDINARY = 'ENABLE_CLOUDINARY';

@@ -12,13 +12,13 @@ const contactSchema = new Schema(
     },
     email: {
       type: String,
+      required: true, // Включити, якщо email є обов'язковим
     },
     photo: {
-      type: String,
-  },
+      type: String, // Поле для зберігання URL фотографії
+    },
     isFavourite: {
       type: Boolean,
-      default: false,
     },
     contactType: {
       type: String,
