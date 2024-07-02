@@ -2,7 +2,7 @@ import createHttpError from 'http-errors';
 
 const validateBody = (schema) => async (req, res, next) => {
   try {
-    await schema.validate(req.body, { abortEarly: false });
+    await schema.validateAsync(req.body, { abortEarly: false });
     next();
   } catch (err) {
     const errorDetails = err.details.map(detail => detail.message);
