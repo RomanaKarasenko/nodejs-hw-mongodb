@@ -31,9 +31,9 @@ contactsRouter.get('/', ctrlWrapper(getAllContacts));
 contactsRouter.get('/:contactId', ctrlWrapper(getContactByIdController));
 contactsRouter.post(
   '/',
-  //upload.single('photo'),
-  validateBody(createContactsSchema),
   upload.single('photo'),
+  validateBody(createContactsSchema),
+  //upload.single('photo'),
   ctrlWrapper(createContactController),
 );
 contactsRouter.patch(
