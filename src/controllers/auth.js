@@ -35,7 +35,7 @@ export const registerUserController = async (req, res) => {
     });
   };
   
-  export const logoutUserController = async (req, res, next) => {
+  export const logoutUserController = async (req, res,) => {
     if (req.cookies.sessionId) {
       await logoutUser(req.cookies.sessionId);
     }
