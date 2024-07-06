@@ -14,7 +14,7 @@ tags:
     description: Auth operations.
 servers:
   - url: http://localhost:3000
-  - url: https://your-deployed-site-url # посилання на задеплоєний сайт
+  - url: https://hw-7-09ee.onrender.com # посилання на задеплоєний сайт
 paths:
   /contacts:
     get:
